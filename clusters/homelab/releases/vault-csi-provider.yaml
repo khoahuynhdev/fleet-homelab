@@ -28,4 +28,4 @@ spec:
         securityContext:
           container:
             runAsUser: 0
-            privileged: false
+            privileged: true
