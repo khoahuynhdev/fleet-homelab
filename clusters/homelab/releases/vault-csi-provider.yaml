@@ -24,3 +24,8 @@ spec:
       enabled: true
       agent:
         enabled: false
+      daemonSet:
+        securityContext:
+          container:
+            runAsUser: 0
+            privileged: false
