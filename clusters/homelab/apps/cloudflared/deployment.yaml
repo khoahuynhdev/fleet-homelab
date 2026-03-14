@@ -18,7 +18,7 @@ spec:
       serviceAccountName: cloudflared
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:2025.4.2
+          image: cloudflare/cloudflared:latest
           args:
             - tunnel
             - run
