@@ -24,6 +24,14 @@ spec:
       enabled: true
       agent:
         enabled: false
+      volumes:
+        - name: vault-ca
+          configMap:
+            name: vault-ca-cert
+      volumeMounts:
+        - name: vault-ca
+          mountPath: /etc/vault-ca
+          readOnly: true
       daemonSet:
         securityContext:
           container:
