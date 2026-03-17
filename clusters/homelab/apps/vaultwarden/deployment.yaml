@@ -20,7 +20,7 @@ spec:
       serviceAccountName: vaultwarden
       containers:
         - name: vaultwarden
-          image: vaultwarden/server:1.33.2
+          image: vaultwarden/server:1.35.4
           ports:
             - name: http
               containerPort: 80
