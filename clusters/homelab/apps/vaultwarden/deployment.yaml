@@ -28,7 +28,15 @@ spec:
             - name: DOMAIN
               value: "https://vault.khoahuynh.dev"
             - name: SIGNUPS_ALLOWED
-              value: "true"
+              value: "false"
+            - name: SHOW_PASSWORD_HINT
+              value: "false"
+            - name: INVITATIONS_ALLOWED
+              value: "false"
+            - name: ORG_CREATION_USERS
+              value: "none"
+            - name: IP_HEADER
+              value: "Cf-Connecting-Ip"
             - name: ADMIN_TOKEN
               valueFrom:
                 secretKeyRef:
