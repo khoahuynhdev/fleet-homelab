@@ -5,3 +5,5 @@ resources:
   - jetstack.yaml
   - metrics-server.yaml
   - secrets-store-csi.yaml
+  - prometheus-community.yaml
+  - enix.yaml
