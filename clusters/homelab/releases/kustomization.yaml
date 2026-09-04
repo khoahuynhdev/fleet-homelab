@@ -7,3 +7,5 @@ resources:
   - metrics-server.yaml
   - secrets-store-csi-driver.yaml
   - vault-csi-provider.yaml
+  - prometheus-blackbox-exporter.yaml
+  - x509-certificate-exporter.yaml
