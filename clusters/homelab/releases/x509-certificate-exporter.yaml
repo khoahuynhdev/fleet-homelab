@@ -14,6 +14,11 @@ spec:
         name: enix
         namespace: flux-system
   values:
+    # Monitor only the control-plane kubeadm certs (host files). The chart's
+    # default secretsExporter watches cluster-wide TLS Secrets and needs
+    # cluster-wide secret-read RBAC — out of scope and against least-privilege.
+    secretsExporter:
+      enabled: false
     hostPathsExporter:
       daemonSets:
         control-plane:
