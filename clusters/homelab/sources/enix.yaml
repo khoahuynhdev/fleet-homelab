@@ -4,5 +4,6 @@ metadata:
   name: enix
   namespace: flux-system
 spec:
+  type: oci
   interval: 1h
-  url: https://charts.enix.io
+  url: oci://quay.io/enix/charts
