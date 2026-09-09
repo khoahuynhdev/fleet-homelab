@@ -1,0 +1,45 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: vaultwarden-and-certs
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: vaultwarden.probes
+      rules:
+        - alert: VaultwardenDown
+          expr: probe_success{instance=~"https://vault\\..*/alive"} == 0
+          for: 3m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Vaultwarden endpoint down: {{ $labels.instance }}"
+            description: "Blackbox probe_success has been 0 for 3m for {{ $labels.instance }}."
+        - alert: VaultwardenSlow
+          expr: probe_duration_seconds{instance=~"https://vault\\..*/alive"} > 2
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Vaultwarden slow: {{ $labels.instance }}"
+            description: "Probe duration > 2s for 10m for {{ $labels.instance }} (current {{ $value | humanizeDuration }})."
+    - name: kubernetes.certs
+      rules:
+        - alert: KubeCertExpiringWarning
+          expr: (x509_cert_not_after - time()) < (21 * 24 * 3600)
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: "Kube cert expiring < 21d: {{ $labels.filepath }}{{ $labels.subject_CN }}"
+            description: "Certificate expires in {{ $value | humanizeDuration }}. Renew with kubeadm certs renew and re-copy admin.conf."
+        - alert: KubeCertExpiringCritical
+          expr: (x509_cert_not_after - time()) < (7 * 24 * 3600)
+          for: 30m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Kube cert expiring < 7d: {{ $labels.filepath }}{{ $labels.subject_CN }}"
+            description: "Certificate expires in {{ $value | humanizeDuration }}. Renew NOW to avoid losing kubectl/API access."
