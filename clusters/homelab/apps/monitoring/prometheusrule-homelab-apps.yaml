@@ -1,0 +1,43 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: homelab-apps
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: homelab-apps.probes
+      rules:
+        - alert: PaperlessDown
+          expr: probe_success{instance="https://docs.khoahuynh.dev/api/documents/"} == 0
+          for: 3m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Paperless-ngx endpoint down: {{ $labels.instance }}"
+            description: "Blackbox probe_success has been 0 for 3m for {{ $labels.instance }}."
+        - alert: PaperlessSlow
+          expr: probe_duration_seconds{instance="https://docs.khoahuynh.dev/api/documents/"} > 2
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Paperless-ngx slow: {{ $labels.instance }}"
+            description: "Probe duration > 2s for 10m for {{ $labels.instance }} (current {{ $value | humanizeDuration }})."
+        - alert: SeafileDown
+          expr: probe_success{instance="https://storage.khoahuynh.dev/api2/ping/"} == 0
+          for: 3m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Seafile endpoint down: {{ $labels.instance }}"
+            description: "Blackbox probe_success has been 0 for 3m for {{ $labels.instance }}."
+        - alert: SeafileSlow
+          expr: probe_duration_seconds{instance="https://storage.khoahuynh.dev/api2/ping/"} > 2
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Seafile slow: {{ $labels.instance }}"
+            description: "Probe duration > 2s for 10m for {{ $labels.instance }} (current {{ $value | humanizeDuration }})."
