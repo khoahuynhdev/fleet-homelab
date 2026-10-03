@@ -28,5 +28,25 @@ spec:
             follow_redirects: true
             preferred_ip_protocol: ip4
             ip_protocol_fallback: false
+        http_401:
+          prober: http
+          timeout: 5s
+          http:
+            method: GET
+            valid_status_codes: [401]
+            follow_redirects: true
+            preferred_ip_protocol: ip4
+            ip_protocol_fallback: false
+        http_2xx_pong:
+          prober: http
+          timeout: 5s
+          http:
+            method: GET
+            valid_status_codes: [200]
+            follow_redirects: true
+            fail_if_body_not_matches_regexp:
+              - pong
+            preferred_ip_protocol: ip4
+            ip_protocol_fallback: false
     serviceMonitor:
       enabled: false

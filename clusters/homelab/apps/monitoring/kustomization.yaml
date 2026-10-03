@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
   - probe-vaultwarden.yaml
   - prometheusrule-vaultwarden.yaml
+  - probe-homelab-apps.yaml
+  - prometheusrule-homelab-apps.yaml
