@@ -48,5 +48,19 @@ spec:
               - pong
             preferred_ip_protocol: ip4
             ip_protocol_fallback: false
+        # Passes only on a 302 to the Access login. A 200 or a 302 to the app's
+        # own /login means the Access app is gone and the login page is public.
+        http_302_access:
+          prober: http
+          timeout: 5s
+          http:
+            method: GET
+            valid_status_codes: [302]
+            follow_redirects: false
+            fail_if_header_not_matches:
+              - header: Location
+                regexp: '^https://k-hq\.cloudflareaccess\.com/'
+            preferred_ip_protocol: ip4
+            ip_protocol_fallback: false
     serviceMonitor:
       enabled: false
