@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: code-server-access-gate
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  interval: 60s
+  module: http_302_access
+  prober:
+    url: prometheus-blackbox-exporter.monitoring.svc:9115
+    scheme: http
+    path: /probe
+  targets:
+    staticConfig:
+      static:
+        - https://code.khoahuynh.dev/

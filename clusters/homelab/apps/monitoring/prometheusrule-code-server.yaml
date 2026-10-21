@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: code-server
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: code-server.probes
+      rules:
+        # Access answers at the edge without the origin, so this watches the gate,
+        # not whether the editor is up.
+        - alert: CodeServerAccessGateMissing
+          expr: probe_success{instance="https://code.khoahuynh.dev/"} == 0
+          for: 3m
+          labels:
+            severity: critical
+          annotations:
+            summary: "code-server is not behind Cloudflare Access: {{ $labels.instance }}"
+            description: "{{ $labels.instance }} has not redirected to the Access login for 3m. If it serves the code-server login, stop the connector on the host: sudo docker stop code-server-cloudflared."
